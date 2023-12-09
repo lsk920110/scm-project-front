@@ -16,8 +16,8 @@ service.defaults.headers = {
 
 service.interceptors.request.use(
   (config) => {
-    console.log("request interceptor");
-    console.log(config.params)
+    // console.log("request interceptor");
+    // console.log(config.params)
     config.data = {
       ...config.data,
       
@@ -28,7 +28,7 @@ service.interceptors.request.use(
       'auth-token' : localStorage.getItem('auth-token')
     }
     // console.log(config.data);
-    console.log('headers after : ',config.headers);
+    // console.log('headers after : ',config.headers);
 
     return config;
   },

@@ -55,14 +55,14 @@ export default function ProductCordRegistration({ changeTitle }) {
           variant="contained"
           onClick={() => {
             // console.log(list);
-            let params = [];
+            let cordDetails = [];
             const a = document.querySelectorAll(".cord-row.use");
 
             console.log(a);
             for (let index = 0; index < a.length; index++) {
               const data = {
-                vendorId: vendorId,
-                productCord: productCord,
+                // vendorId: vendorId,
+                // productCord: productCord,
                 supplyPrice: a[index].querySelector(".supplyPrice input").value,
                 supplyPriceVat: a[index].querySelector(".supplyPriceVat input")
                   .value,
@@ -89,12 +89,17 @@ export default function ProductCordRegistration({ changeTitle }) {
               }
 
 
-              params.push(data);
+              cordDetails.push(data);
             }
-            console.log(params);
+            console.log(cordDetails);
+            const data = {
+              vendorId : vendorId,
+              productCord : productCord,
+              cordDetails : cordDetails
+            }
 
             service
-              .post("/api/product/cord", { list: params })
+              .post("/api/product/cord", data)
               .then((res) => {
                 console.log(res.data);
                 const { errorCode, errorMessage } = res.data;
@@ -106,7 +111,7 @@ export default function ProductCordRegistration({ changeTitle }) {
                 }
               })
               .catch((err) => console.error(err));
-            console.log(params)
+            console.log(data)
           }}
         >
           등록

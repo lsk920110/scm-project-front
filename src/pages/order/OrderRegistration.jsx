@@ -1,7 +1,9 @@
 import {
   Box,
+  Button,
   FormControl,
   Grid,
+  Input,
   InputLabel,
   MenuItem,
   Select,
@@ -18,26 +20,25 @@ import RegistrationButton from "../component/RegistrationButton";
 import service from "../../utils/requestAxios";
 import { useNavigate } from "react-router-dom";
 import dateUtil from "../../utils/dateUtil";
-
-
+import { CheckBox } from "@mui/icons-material";
 
 const style = {
   marginY: "10px",
 };
 export default function OrderRegistration({ changeTitle }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [vendorList, setVendorList] = useState([]);
   const [vendorId, setVendorId] = useState(0);
   const [productCord, setProductCord] = useState([]);
   const [salesNo, setSalesNo] = useState("");
   const [deliveryReqDt, setDeliveryReqDt] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [customerPhoneNumber, setCustomerPhoneNumber] = useState("");
-  const [customerAddressFirst, setCustomerAddressFirst] = useState("");
-  const [customerAddressSecond, setCustomerAddressSecond] = useState("");
-  const [customerAddressThird, setCustomerAddressThird] = useState("");
-  const [customerAddressDetail, setCustomerAddressDetail] = useState("");
-  const [remarks, setRemarks] = useState("");
+  const [customerName, setCustomerName] = useState("이승규");
+  const [customerPhoneNumber, setCustomerPhoneNumber] = useState("01079076010");
+  const [customerAddressFirst, setCustomerAddressFirst] = useState("서울");
+  const [customerAddressSecond, setCustomerAddressSecond] = useState("영등포구");
+  const [customerAddressThird, setCustomerAddressThird] = useState("대방역");
+  const [customerAddressDetail, setCustomerAddressDetail] = useState("아파트");
+  const [remarks, setRemarks] = useState("비고사항입니다");
   const [cordList, setCordList] = useState([]);
   const [cord, setCord] = useState("");
   useEffect(() => {
@@ -67,7 +68,6 @@ export default function OrderRegistration({ changeTitle }) {
   const handleCustomerAddressDetail = (e) =>
     setCustomerAddressDetail(e.target.value);
   const handleRemarks = (e) => setRemarks(e.target.value);
-  
 
   return (
     <>
@@ -178,32 +178,79 @@ export default function OrderRegistration({ changeTitle }) {
             onChange={handleRemarks}
           />
 
+          
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>check</TableCell>
+                {/* <TableCell>check</TableCell> */}
                 <TableCell>상품코드</TableCell>
                 <TableCell>모델코드</TableCell>
+                
                 <TableCell>수량</TableCell>
                 <TableCell>공급가</TableCell>
                 <TableCell>부가세</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {
-                cordList.map((item,idx)=>{
+                cordList.map((cord)=>{
                   return (
-                    <TableRow>
+                    <>
+                    <TableRow sx={{backgroundColor : 'lightgrey'}}>
+                      {/* <TableCell>{cord.keyId}</TableCell> */}
+                      <TableCell>{cord.productCord}</TableCell>
                       <TableCell></TableCell>
-                      <TableCell>{item.productCord}</TableCell>
-                      <TableCell>{item.modelCord}</TableCell>
-                      <TableCell>{item.quantity}</TableCell>
-                      <TableCell>{item.supplyPrice}</TableCell>
-                      <TableCell>{item.supplyPriceVat}</TableCell>
+                      <TableCell><Input type="number" value={cord._quantity}
+                      onChange={(e)=>{
+                        console.log(e.target.value)
+                        const temp = cordList;
+                        temp.forEach((_item,idx)=>{
+                          if(_item.keyId === cord.keyId){
+                            console.log(cord.keyId+'||'+_item.keyId)
+                            _item._quantity = e.target.value
+                          }
+                        })
+                        setCordList([...temp])
+                      }}
+                      onAuxClick={(e)=>{
+                        console.log(e.target.value)
+                        const temp = cordList;
+                        temp.forEach((_item,idx)=>{
+                          if(_item.keyId === cord.keyId){
+                            console.log(cord.keyId+'||'+_item.keyId)
+                            _item._quantity = e.target.value
+                          }
+                        })
+                        setCordList(temp)
+                      }}
+                      /></TableCell>
+                      
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell><Button variant="text" color="error"
+                      onClick={()=>{
+                        const temp = cordList.filter((item,idx)=>item.keyId !== cord.keyId)
+                        setCordList([...temp])
+                      }}
+                      
+                      >삭제</Button></TableCell>
                     </TableRow>
+                    {cord.detailList.map((detail)=>{
+                      return (
+                        <TableRow>
+                        {/* <TableCell></TableCell> */}
+                        <TableCell></TableCell>
+                        <TableCell>{detail.modelCord}</TableCell>
+                        <TableCell>{detail.quantity * cord._quantity}</TableCell>
+                        <TableCell>{detail.supplyPrice}</TableCell>
+                        <TableCell>{detail.supplyPriceVat}</TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
+                      );
+                    })}</>
                   );
                 })
-
               }
             </TableBody>
             <TableFooter>
@@ -218,22 +265,33 @@ export default function OrderRegistration({ changeTitle }) {
                     onKeyUp={(e) => {
                       // console.log(e.code)
                       if (e.code === "Enter") {
-                        if(vendorId === null || vendorId === undefined || vendorId === 0 || vendorId === "0"){
-                          alert('거래선을 선택하세요')
+                        if (
+                          vendorId === null ||
+                          vendorId === undefined ||
+                          vendorId === 0 ||
+                          vendorId === "0"
+                        ) {
+                          alert("거래선을 선택하세요");
                           return;
                         }
-                        service.get("/api/product/cord/detail", {
-                          params: {
-                            productCord: cord,
-                            vendorId: vendorId,
-                          },
-                        })
-                        .then(res=>{
-                          const temp = cordList;
-                          setCordList([...temp,...res.data.result])
-                        })
-                        .catch(err=>{})
-                        ;
+                        service
+                          .get("/api/product/cord/detail", {
+                            params: {
+                              productCord: cord,
+                              vendorId: vendorId,
+                            },
+                          })
+                          .then((res) => {
+                            console.log(res.data.result);
+                            let _result = res.data.result;
+                            _result.keyId = new Date().getTime()
+                            _result._quantity = 0;
+                            cordList.push(res.data.result);
+                            let temp = cordList;
+                            // temp.push(res.data.result)
+                            setCordList([...temp]);
+                          })
+                          .catch((err) => {});
                       }
                     }}
                   />
@@ -248,26 +306,27 @@ export default function OrderRegistration({ changeTitle }) {
         <Grid item xs={4}>
           <RegistrationButton
             onCancel={() => {
-              navigate('/order/management')
+              navigate("/order/management");
             }}
             onSave={() => {
-              service.post(`/api/order/statement`,{
-                vendorId : vendorId,
-                salesNo : salesNo,
-                deliveryReqDt : new Date(deliveryReqDt),
-                customerName : customerName,
-                customerPhoneNumber : customerPhoneNumber,
-                customerAddressFirst : customerAddressFirst,
-                customerAddressSecond : customerAddressSecond,
-                customerAddressThird : customerAddressThird,
-                customerAddressDetail : customerAddressDetail,
-                remarks : remarks,
-                cordList : cordList
-              })
-              .then(res=>{
-                if(res.data.errorCode === '0000 ') alert('등록성공')
-              })
-              .catch(err=>console.error(err))
+              service
+                .post(`/api/order/statement`, {
+                  vendorId: vendorId,
+                  salesNo: salesNo,
+                  deliveryReqDt: new Date(deliveryReqDt),
+                  customerName: customerName,
+                  customerPhoneNumber: customerPhoneNumber,
+                  customerAddressFirst: customerAddressFirst,
+                  customerAddressSecond: customerAddressSecond,
+                  customerAddressThird: customerAddressThird,
+                  customerAddressDetail: customerAddressDetail,
+                  remarks: remarks,
+                  cordList: cordList,
+                })
+                .then((res) => {
+                  if (res.data.errorCode === "0000 ") alert("등록성공");
+                })
+                .catch((err) => console.error(err));
             }}
           />
         </Grid>
