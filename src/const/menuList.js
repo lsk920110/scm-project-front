@@ -35,7 +35,7 @@ export const menuList = [
   { id: 7, path: "sales/management", title: "매출관리", icon: <PointOfSale /> },
   {
     id: 8,
-    path: "shipping/management",
+    path: "delivery/management",
     title: "배송조회",
     icon: <LocalShipping />,
   },

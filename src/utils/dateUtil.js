@@ -11,8 +11,15 @@ const dateUtil = {
         const second = _date.getSeconds() < 10 ? '0'+(_date.getSeconds()).toString() : (_date.getSeconds()).toString();
         return `${_date.getHours()}${sep}${minute}${sep}${second}`
     },
+    getToday : function(){ 
+        const today = new Date();
+        return `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
+
+    },
     
 }
+
+
 
 module.exports = dateUtil
 

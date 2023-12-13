@@ -22,7 +22,10 @@ import ProductCordDetail from "./pages/productCord/ProductCordDetail";
 import OrderRegistration from "./pages/order/OrderRegistration";
 import OrderManagement from "./pages/order/OrderManagement";
 import OrderDetail from "./pages/order/OrderDetail";
-
+import DeliveryManagement from "./pages/delivery/DeliveryManagement";
+import DeliveryList from './pages/delivery/DeliveryList'
+import TcList from './pages/delivery/TcList'
+import DeliveryStaffList from './pages/delivery/DeliveryStaffList'
 export default function App() {
   const [nowSection,setNowSetcion] = useState('');
 
@@ -36,15 +39,11 @@ export default function App() {
               <Route  path={item.path} element={<item.element title={item.title} changeTitle={()=>{setNowSetcion(item.title)}}/>}/>
             );
           })}
-          {/* <Route path="menu/management"  element={<MenuManagement nowSection={nowSection} setNowSection={setNowSetcion}/>} />
-          <Route path="menu/registration" element={<MenuRegistration nowSection={nowSection} setNowSection={setNowSetcion}/>} />
-          <Route path="vendor/management" element={<VendorManagement nowSection={nowSection} setNowSection={setNowSetcion}/>} />
-          <Route path="vendor/registration" element={<VendorRegistration nowSection={nowSection} setNowSection={setNowSetcion}/>} />
-          <Route path="vendor/detail" element={<VendorDetail nowSection={nowSection} setNowSection={setNowSetcion}/>} />
-          <Route path="member/management" element={<MemberManagement nowSection={nowSection} setNowSection={setNowSetcion}/>} />
-          <Route path="member/registration" element={<MemberRegistration nowSection={nowSection} setNowSection={setNowSetcion}/>} />
-          <Route path="member/detail" element={<MemberDetail nowSection={nowSection} setNowSection={setNowSetcion} />} />
-          <Route path="category/management" element={<CategoryManagement nowSection={nowSection} setNowSection={setNowSetcion}/>}/> */}
+          <Route path="delivery/management" element={<DeliveryManagement title='배송' changeTitle={()=>setNowSetcion('배송관리')}/>}>
+            <Route path="delivery/list" element={<DeliveryList/>}/>
+            <Route path="tc/list" element={<TcList/>}/>
+            <Route path="staff/list" element={<DeliveryStaffList/>}/>
+          </Route>
         </Route>
       </Routes>
     </>
@@ -73,4 +72,6 @@ const routing = [
   {path : 'order/registration' , element : OrderRegistration , title : '발주등록'},
   {path : 'order/management' , element : OrderManagement , title : '주문관리'},
   {path : 'order/detail' , element : OrderDetail , title : '주문 상세조회'},
+  {path : 'delivery/management' , element : DeliveryManagement , title : '배송조회'},
+  
 ]

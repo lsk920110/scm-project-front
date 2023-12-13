@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   FormControl,
   Grid,
@@ -13,14 +12,12 @@ import {
   TableFooter,
   TableHead,
   TableRow,
-  TextField,
+  TextField
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import RegistrationButton from "../component/RegistrationButton";
-import service from "../../utils/requestAxios";
 import { useNavigate } from "react-router-dom";
-import dateUtil from "../../utils/dateUtil";
-import { CheckBox } from "@mui/icons-material";
+import service from "../../utils/requestAxios";
+import RegistrationButton from "../component/RegistrationButton";
 
 const style = {
   marginY: "10px",
@@ -183,8 +180,8 @@ export default function OrderRegistration({ changeTitle }) {
             <TableHead>
               <TableRow>
                 {/* <TableCell>check</TableCell> */}
-                <TableCell>상품코드</TableCell>
                 <TableCell>모델코드</TableCell>
+                <TableCell>상품코드</TableCell>
                 
                 <TableCell>수량</TableCell>
                 <TableCell>공급가</TableCell>
@@ -310,7 +307,7 @@ export default function OrderRegistration({ changeTitle }) {
             }}
             onSave={() => {
               service
-                .post(`/api/order/statement`, {
+                .post(`/api/order/statement`, {list:[{
                   vendorId: vendorId,
                   salesNo: salesNo,
                   deliveryReqDt: new Date(deliveryReqDt),
@@ -322,7 +319,7 @@ export default function OrderRegistration({ changeTitle }) {
                   customerAddressDetail: customerAddressDetail,
                   remarks: remarks,
                   cordList: cordList,
-                })
+                }]})
                 .then((res) => {
                   if (res.data.errorCode === "0000 ") alert("등록성공");
                 })
