@@ -17,10 +17,12 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from "@mui/material";
 import service from "../../utils/requestAxios";
 import dateUtil from "../../utils/dateUtil";
 import SetUtil from "../../utils/setUtil";
+import { Link } from "react-router-dom";
 // import { CheckBox } from "@mui/icons-material";
 const style = {
   marginY: "10px",
@@ -43,6 +45,7 @@ export default function OrderManagement() {
       })
       .then((res) => {
         setVendorList(res.data.result);
+        setVendor(res.data.result[0].id)
       })
       .catch((err) => console.error(err));
   }, []);
@@ -68,6 +71,7 @@ export default function OrderManagement() {
           temp.add(item.statementId);
         });
         setAllstatementList(temp);
+        setCheckedList(new Set())
       })
       .catch((err) => console.error(err));
   };
@@ -82,6 +86,7 @@ export default function OrderManagement() {
       .post("/api/order", data)
       .then((res) => {
         alert(res.data.errorMessage);
+        search()
       })
       .catch((err) => console.error(err));
   };
@@ -89,11 +94,26 @@ export default function OrderManagement() {
     const data = {
       statementIdList: [...checkedList],
     };
+    service.post(`/api/order/delete`,data)
+    .then(res=>{
+      alert(res.data.errorMessage);
+      search()
+    })
+    .catch(err=>console.error(err))
   };
   const deleteStatement = () => {
     const data = {
       statementIdList: [...checkedList],
     };
+    console.log('data : ',data)
+    service.post(`/api/order/statement/delete`,data)
+    .then(res=>{
+      alert(res.data.errorMessage)
+      search()
+    })
+    .catch(err=>console.error(err))
+
+
   };
   return (
     <>
@@ -134,22 +154,22 @@ export default function OrderManagement() {
               >
                 <MenuItem value={1}>전표번호</MenuItem>
                 <MenuItem value={2}>주문번호</MenuItem>
-                <MenuItem value={3}>납품번호</MenuItem>
+                <MenuItem value={3}>판매번호</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <TextField fullWidth />
+            <TextField fullWidth value={keyword} onChange={(e)=>setKeyword(e.target.value)}/>
           </Grid>
         </Grid>
 
         <Grid container spacing={2} sx={style}>
           <Grid item xs={2}></Grid>
           <Grid item xs={3}>
-            <TextField type="date" fullWidth value={startDt} />
+            <TextField type="date" fullWidth value={startDt} onChange={(e)=>setStartDt(e.target.value)} />
           </Grid>
           <Grid item xs={3}>
-            <TextField type="date" fullWidth value={endDt} />
+            <TextField type="date" fullWidth value={endDt} onChange={e=>setEndDt(e.target.value)}/>
           </Grid>
           <Grid item xs={2}>
             <FormControl fullWidth>
@@ -212,7 +232,7 @@ export default function OrderManagement() {
           <TableRow>
             <TableCell>
               <Checkbox
-                checked={SetUtil.areSetsEqaul(checkedList,allStatementList)}
+                checked={SetUtil.areSetsEqaul(checkedList, allStatementList)}
                 onClick={() => {
                   setAllCheck(true);
                   setCheckedList(new Set(allStatementList));
@@ -257,7 +277,12 @@ export default function OrderManagement() {
 }
 
 function Row({ item, checkedList, setCheckedList }) {
-
+  const style =(state)=> {
+    return {
+      fontWeight : 'bold',
+      color : state === '2' ? 'red' : 'black'
+    }
+  }
   return (
     <>
       <TableRow
@@ -265,6 +290,7 @@ function Row({ item, checkedList, setCheckedList }) {
       >
         <TableCell>
           <FormControlLabel
+          disabled={item.orderState === '2'}
             control={<Checkbox />}
             value={item.statementId}
             checked={checkedList.has(item.statementId)}
@@ -282,37 +308,42 @@ function Row({ item, checkedList, setCheckedList }) {
             }}
           />
         </TableCell>
-        <TableCell>{item.statementId}</TableCell>
-        <TableCell>{item.orderId}</TableCell>
-        <TableCell>{item.salesNo}</TableCell>
+        <TableCell sx={style(item.orderState)}>
+          {item.orderState === '1' ?
+          <Link to={"/order/detail"} state={{ statementId: item.statementId }}>
+            {item.statementId}
+          </Link> : 
+          <Typography>{item.statementId}</Typography>
+          }
+        </TableCell>
+        <TableCell sx={style(item.orderState)}>{item.orderId}</TableCell>
+        <TableCell sx={style(item.orderState)}>{item.salesNo}</TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
-        <TableCell>{item.totalQuantity}</TableCell>
+        <TableCell sx={style(item.orderState)}>{item.totalQuantity}</TableCell>
         <TableCell></TableCell>
-        <TableCell>{item.totalPrice.toLocaleString("ko-KR")}</TableCell>
-        <TableCell>{item.customerName}</TableCell>
+        <TableCell sx={style(item.orderState)}>
+          {item.totalPrice.toLocaleString("ko-KR")}
+        </TableCell>
+        <TableCell sx={style(item.orderState)}>{item.customerName}</TableCell>
 
         <TableCell>TC</TableCell>
-        <TableCell>{dateUtil.yyyy_mm_dd(item.orderRegDt, "-")}</TableCell>
-        <TableCell>{dateUtil.yyyy_mm_dd(item.deliveryReqDt, "-")}</TableCell>
-        <TableCell>
+        <TableCell sx={style(item.orderState)}>
+          {dateUtil.yyyy_mm_dd(item.orderRegDt, "-")}
+        </TableCell>
+        <TableCell sx={style(item.orderState)}>
+          {dateUtil.yyyy_mm_dd(item.deliveryReqDt, "-")}
+        </TableCell>
+        <TableCell sx={style(item.orderState)}>
           {dateUtil.yyyy_mm_dd(item.expectedDeliveryDt, "-")}
         </TableCell>
-        <TableCell>{item.deliveryId}</TableCell>
-        <TableCell>{item.orderState}</TableCell>
+        <TableCell sx={style(item.orderState)}>{item.deliveryId}</TableCell>
+        <TableCell sx={style(item.orderState)}>
+          {item.orderState === '1' ? '정상' : ''}
+          {item.orderState === '2' ? '삭제' : ''}
+          </TableCell>
       </TableRow>
       {item.cordList.map((cord, idx) => {
-        // let quantity = 0;
-        // let totalPrice = 0;
-
-        // quantity +=
-        //   cord.statementProductCordQuantity * cord.productCordDetailQuantity;
-        // totalPrice +=
-        //   cord.statementProductCordQuantity *
-        //   cord.productCordDetailQuantity *
-        //   cord.supplyPrice;
-        // setTotalQuantity(quantity);
-        // setTotalPrice(totalPrice);
         return (
           <>
             <TableRow

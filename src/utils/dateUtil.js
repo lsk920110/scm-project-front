@@ -1,5 +1,6 @@
 const dateUtil = {
     yyyy_mm_dd : function(date,sep){
+        if(date === null) return '';
         const _date = new Date(date);
         const month = _date.getMonth() < 10 ? '0'+(_date.getMonth()+1).toString() : (_date.getMonth()+1).toString()
         const date_ = _date.getDate() < 10 ? '0'+_date.getDate().toString() : _date.getDate().toString()
