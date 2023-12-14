@@ -48,13 +48,14 @@ const navigate = useNavigate();
   };
   useEffect(()=>{
     changeTitle()
+    document.getElementById('default').click()
   },[])
 
   return (
     <Box sx={{ width: '100%' }}>
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
       <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-        <Tab label="배송조회" onClick={()=>{navigate('delivery/list')}}/>
+        <Tab id='default' label="배송조회" onClick={()=>{navigate('delivery/list')}}/>
         <Tab label="TC" onClick={()=>navigate('tc/list')} />
         <Tab label="배송기사" onClick={()=>navigate('staff/list')}/>
       </Tabs>

@@ -26,7 +26,7 @@ export default function TcList() {
             return (
               <TableRow>
                 <TableCell>{item.tc}</TableCell>
-                <TableCell>{item.deliveryArea}</TableCell>
+                <TableCell>{item.deliveryArea.split('.').join(' ')}</TableCell>
                 <TableCell>{item.telephone}</TableCell>
                 <TableCell>{item.state === '1' ? '운영중' : '중단'}</TableCell>
               </TableRow>

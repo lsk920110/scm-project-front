@@ -44,7 +44,7 @@ export default function DeliveryStaffList() {
     service
       .post(`/api/delivery/staff`, data)
       .then((res) => {
-        setStaffList([...staffList,res.data.result])
+        setStaffList([...staffList, res.data.result]);
       })
       .catch((err) => console.error(err));
   };
@@ -111,8 +111,8 @@ export default function DeliveryStaffList() {
             return (
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
-                <TableCell>{item.tcId}</TableCell>
-                <TableCell>{item.deliveryArea}</TableCell>
+                <TableCell>{item.tcName}</TableCell>
+                <TableCell>{item.deliveryArea.split(".").join(" ")}</TableCell>
                 <TableCell>{item.staffName}</TableCell>
                 <TableCell>{item.staffPhone}</TableCell>
               </TableRow>
