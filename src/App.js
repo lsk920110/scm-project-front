@@ -25,7 +25,10 @@ import OrderDetail from "./pages/order/OrderDetail";
 import DeliveryManagement from "./pages/delivery/DeliveryManagement";
 import DeliveryList from './pages/delivery/DeliveryList'
 import TcList from './pages/delivery/TcList'
-import DeliveryStaffList from './pages/delivery/DeliveryStaffList'
+import DeliveryStaffList from './pages/deliveryStaff/DeliveryStaffList'
+import SalesManagement from "./pages/sales/SalesManagement";
+import TodayDelivery from "./pages/deliveryStaff/TodayDelivery";
+import TodayDeliveryDetail from "./pages/deliveryStaff/TodayDeliveryDetail";
 export default function App() {
   const [nowSection,setNowSetcion] = useState('');
 
@@ -42,7 +45,7 @@ export default function App() {
           <Route path="delivery/management" element={<DeliveryManagement title='배송' changeTitle={()=>setNowSetcion('배송관리')}/>}>
             <Route path="delivery/list" element={<DeliveryList/>}/>
             <Route path="tc/list" element={<TcList/>}/>
-            <Route path="staff/list" element={<DeliveryStaffList/>}/>
+            {/* <Route path="staff/list" element={<DeliveryStaffList/>}/> */}
           </Route>
         </Route>
       </Routes>
@@ -73,5 +76,9 @@ const routing = [
   {path : 'order/management' , element : OrderManagement , title : '주문관리'},
   {path : 'order/detail' , element : OrderDetail , title : '주문 상세조회'},
   {path : 'delivery/management' , element : DeliveryManagement , title : '배송조회'},
+  {path : 'delivery/staff/management' , element : DeliveryStaffList , title : '배송조회'},
+  {path : 'delivery/staff/delivery/list' , element : TodayDelivery , title : '오늘의배송'},
+  {path : 'delivery/staff/delivery/detail' , element : TodayDeliveryDetail , title : '배송상세'},
+  {path : 'sales/management' , element : SalesManagement , title : '매출조회'},
   
 ]

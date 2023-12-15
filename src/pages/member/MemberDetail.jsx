@@ -33,8 +33,6 @@ export default function MemberDetail({changeTitle}) {
   const handleState = (e) => setState(e.target.value);
   const [departmentList, setDepartmentList] = useState([]);
   const save = () => {
-    //birth
-
     const data = {
       name: name,
       password: password,

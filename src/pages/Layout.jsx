@@ -27,7 +27,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { styled, useTheme } from "@mui/material/styles";
 import * as React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { menuList } from "../const/menuList";
 import service from "../utils/requestAxios";
 
@@ -145,32 +145,49 @@ function Layout({ nowSection, setNowSetcion }) {
           >
             <MenuIcon />
           </IconButton>
-            <Typography variant="h6" noWrap component="div" color={"white"} width={'60%'}>
-              {nowSection}
-            </Typography>
-              <Typography variant="h6" noWrap component="div" color={"white"} width={'30%'}>
-                {localStorage.getItem("loginMemberName")} 님 환영합니다.
-              </Typography>
-              <Button variant="text" sx={{color : 'white'}}
-              onClick={()=>{
-                service.post(`/api/member/logout` , {id : localStorage.getItem('loginMemberId')})
-                .then(res=>{
-                  const {errorCode , errorMessage , result} = res.data;
-                  if(errorCode === '0000'){
-                    alert('로그아웃 되었습니다.');
-                    navigate('/login')
-                  }else {
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            color={"white"}
+            width={"60%"}
+          >
+            {nowSection}
+          </Typography>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            color={"white"}
+            width={"30%"}
+          >
+            {localStorage.getItem("loginMemberName")} 님 환영합니다.
+          </Typography>
+          <Button
+            variant="text"
+            sx={{ color: "white" }}
+            onClick={() => {
+              service
+                .post(`/api/member/logout`, {
+                  id: localStorage.getItem("loginMemberId"),
+                })
+                .then((res) => {
+                  const { errorCode, errorMessage, result } = res.data;
+                  if (errorCode === "0000") {
+                    alert("로그아웃 되었습니다.");
+                    navigate("/login");
+                  } else {
                     alert(errorMessage);
                   }
-                })
-              }}
-              >
-                LOGOUT
-              </Button>
-              
-            {/* <Button variant="text">
+                });
+            }}
+          >
+            LOGOUT
+          </Button>
+
+          {/* <Button variant="text">
             </Button> */}
-            {/* <Box display={'flex'} justifyContent={'space-around'} width={'100%'}>
+          {/* <Box display={'flex'} justifyContent={'space-around'} width={'100%'}>
           </Box> */}
         </Toolbar>
       </AppBar>
@@ -187,35 +204,37 @@ function Layout({ nowSection, setNowSetcion }) {
 
         <List>
           {menuList.map((item, index) => (
-            <ListItem key={item.id} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-                onClick={() => {
-                  navigate(item.path);
-                  setTitle(item.title);
-                }}
-              >
-                <ListItemIcon
+            <Link to={item.path} style={{textDecoration : 'none' , color : 'rgba(0,0,0,0.87)'}}>
+              <ListItem key={item.id} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    // color : 'red'
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                  onClick={() => {
+                    // navigate(item.path);
+                    setTitle(item.title);
                   }}
                 >
-                  {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.title}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      // color : 'red'
+                    }}
+                  >
+                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.title}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           ))}
         </List>
       </Drawer>

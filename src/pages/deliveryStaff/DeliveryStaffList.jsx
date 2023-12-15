@@ -14,6 +14,7 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function DeliveryStaffList() {
   const [tcList, setTcList] = useState([]);
@@ -62,7 +63,7 @@ export default function DeliveryStaffList() {
               {tcList.map((item, idx) => {
                 return (
                   <MenuItem value={item.tc}>
-                    {item.tc} {item.deliveryArea}
+                    {item.tc} {item.tcName}
                   </MenuItem>
                 );
               })}
@@ -101,7 +102,8 @@ export default function DeliveryStaffList() {
           <TableRow>
             <TableCell>id</TableCell>
             <TableCell>TC</TableCell>
-            <TableCell>지역</TableCell>
+            {/* <TableCell>지역</TableCell> */}
+            <TableCell>배송건</TableCell>
             <TableCell>기사명</TableCell>
             <TableCell>연락처</TableCell>
           </TableRow>
@@ -112,8 +114,13 @@ export default function DeliveryStaffList() {
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.tcName}</TableCell>
-                <TableCell>{item.deliveryArea.split(".").join(" ")}</TableCell>
-                <TableCell>{item.staffName}</TableCell>
+                <TableCell></TableCell>
+                {/* <TableCell>{item.deliveryArea.split(".").join(" ")}</TableCell> */}
+                <TableCell>
+                  <Link to={"/delivery/staff/delivery/list"} state={{staffId : item.id}}>
+                    {item.staffName}
+                  </Link>
+                </TableCell>
                 <TableCell>{item.staffPhone}</TableCell>
               </TableRow>
             );

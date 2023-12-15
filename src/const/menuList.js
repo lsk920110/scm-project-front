@@ -1,5 +1,6 @@
 import {
   Category,
+  Engineering,
   Group,
   Handshake,
   Inventory,
@@ -30,7 +31,7 @@ export const menuList = [
     title: "상품코드관리",
     icon: <Inventory />,
   },
-  { id: 5, path: "order/registration", title: "발주등록", icon: <ListAlt /> },
+  // { id: 5, path: "order/registration", title: "발주등록", icon: <ListAlt /> },
   { id: 6, path: "order/management", title: "주문관리", icon: <Toc /> },
   { id: 7, path: "sales/management", title: "매출관리", icon: <PointOfSale /> },
   {
@@ -39,5 +40,12 @@ export const menuList = [
     title: "배송조회",
     icon: <LocalShipping />,
   },
+  {
+    id: 9,
+    path: "delivery/staff/management",
+    title: "배송기사조회",
+    icon: <Engineering />,
+  },
+
   
 ];

@@ -19,6 +19,8 @@ export default function DeliveryList() {
   const [vendor, setVendor] = useState(0);
   const [vendorList, setVendorList] = useState([]);
   const [deliveryList, setDeliveryList] = useState([]);
+  const [startDt, setStartDt] = useState(dateUtil.getToday());
+  const [endDt, setEndDt] = useState(dateUtil.getToday());
   const allocateDelivery = () => {
     service
       .get(`/api/delivery/allocation`)
@@ -40,8 +42,7 @@ export default function DeliveryList() {
       .catch((err) => console.error(err));
   }, []);
 
-  const [startDt, setStartDt] = useState("");
-  const [endDt, setEndDt] = useState("");
+
 
   const deliveryListCall = () => {
     const data = {
