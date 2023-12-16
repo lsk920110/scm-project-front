@@ -76,7 +76,7 @@ const routing = [
   {path : 'order/management' , element : OrderManagement , title : '주문관리'},
   {path : 'order/detail' , element : OrderDetail , title : '주문 상세조회'},
   {path : 'delivery/management' , element : DeliveryManagement , title : '배송조회'},
-  {path : 'delivery/staff/management' , element : DeliveryStaffList , title : '배송조회'},
+  {path : 'delivery/staff/management' , element : DeliveryStaffList , title : '배송기사'},
   {path : 'delivery/staff/delivery/list' , element : TodayDelivery , title : '오늘의배송'},
   {path : 'delivery/staff/delivery/detail' , element : TodayDeliveryDetail , title : '배송상세'},
   {path : 'sales/management' , element : SalesManagement , title : '매출조회'},

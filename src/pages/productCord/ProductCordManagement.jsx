@@ -5,6 +5,7 @@ import {
   Button,
   Collapse,
   FormControl,
+  Grid,
   IconButton,
   InputLabel,
   MenuItem,
@@ -33,7 +34,7 @@ export default function ProductCordManagement({ changeTitle }) {
   }, []);
   function productCordList() {
     service
-      .get(`/api/product/cord`, { params: {keyword: "", vendorId: vendorId } })
+      .get(`/api/product/cord`, { params: { keyword: "", vendorId: vendorId } })
       .then((res) => {
         console.log(res);
         setList(res.data.result);
@@ -43,23 +44,39 @@ export default function ProductCordManagement({ changeTitle }) {
   return (
     <>
       <TopTitle registrationLink={"/cord/registration"} />
-      <Box>
-        <FormControl fullWidth>
-          <InputLabel>거래선</InputLabel>
-          <Select onChange={(e)=>setVendorId(e.target.value)} value={vendorId}>
-            {vendorList.map((item, idx) => {
-              return <MenuItem value={item.id}>{item.vendorName}</MenuItem>;
-            })}
-          </Select>
-        </FormControl>
-        <Button variant="contained" color="info" onClick={productCordList}>검색</Button>
-      </Box>
+      <Grid container spacing={3} marginBottom={"30px"}>
+        <Grid item xs={8}>
+          <FormControl fullWidth>
+            <InputLabel id="vendorLabel">거래선</InputLabel>
+            <Select
+              label="거래선"
+              labelId="vendorLabel"
+              onChange={(e) => setVendorId(e.target.value)}
+              value={vendorId}
+            >
+              {vendorList.map((item, idx) => {
+                return <MenuItem value={item.id}>{item.vendorName}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={2}>
+          <Button
+            sx={{ height: "100%" }}
+            variant="contained"
+            color="info"
+            fullWidth
+            onClick={productCordList}
+          >
+            검색
+          </Button>
+        </Grid>
+      </Grid>
       <Table>
         <TableRow>
           <TableCell></TableCell>
           <TableCell>거래선</TableCell>
           <TableCell>상품코드</TableCell>
-
           <TableCell>등록자</TableCell>
           <TableCell>등록일자</TableCell>
         </TableRow>
@@ -93,7 +110,6 @@ function Row({ item }) {
         </TableCell>
         <TableCell>{item.vendorName}</TableCell>
         <TableCell>{item.productCord}</TableCell>
-
         <TableCell>{item.regMemberName}</TableCell>
         <TableCell>{item.regDt}</TableCell>
       </TableRow>

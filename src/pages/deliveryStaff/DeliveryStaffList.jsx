@@ -16,7 +16,8 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-export default function DeliveryStaffList() {
+export default function DeliveryStaffList({changeTitle}) {
+  changeTitle()
   const [tcList, setTcList] = useState([]);
   const [tc, setTc] = useState(0);
   const [staffName, setStaffName] = useState("");
@@ -102,8 +103,8 @@ export default function DeliveryStaffList() {
           <TableRow>
             <TableCell>id</TableCell>
             <TableCell>TC</TableCell>
-            {/* <TableCell>지역</TableCell> */}
-            <TableCell>배송건</TableCell>
+            {/* <TableCell>오늘배송건</TableCell>
+            <TableCell>내일배송건</TableCell> */}
             <TableCell>기사명</TableCell>
             <TableCell>연락처</TableCell>
           </TableRow>
@@ -114,8 +115,8 @@ export default function DeliveryStaffList() {
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.tcName}</TableCell>
-                <TableCell></TableCell>
-                {/* <TableCell>{item.deliveryArea.split(".").join(" ")}</TableCell> */}
+                {/* <TableCell></TableCell>
+                <TableCell></TableCell> */}
                 <TableCell>
                   <Link to={"/delivery/staff/delivery/list"} state={{staffId : item.id}}>
                     {item.staffName}

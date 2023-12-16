@@ -23,13 +23,15 @@ import service from "../../utils/requestAxios";
 import dateUtil from "../../utils/dateUtil";
 import SetUtil from "../../utils/setUtil";
 import { Link } from "react-router-dom";
+import VendorSelector from "../component/VendorSelector";
 // import { CheckBox } from "@mui/icons-material";
 const style = {
   marginY: "10px",
 };
-export default function OrderManagement() {
+export default function OrderManagement({changeTitle}) {
+  changeTitle()
   // const [list, setList] = useState([]);
-  const [vendorList, setVendorList] = useState([]);
+  // const [vendorList, setVendorList] = useState([]);
   const [vendor, setVendor] = useState(0);
   const [searchOption, setSearchOption] = useState(1);
   const [startDt, setStartDt] = useState(dateUtil.getToday());
@@ -38,17 +40,17 @@ export default function OrderManagement() {
   const [create, setCreate] = useState(1);
   const [allStatementList, setAllstatementList] = useState(new Set());
   const [allCheck, setAllCheck] = useState(false);
-  useEffect(() => {
-    service
-      .get(`/api/vendor/list`, {
-        params: { reqIndex: 1, reqCount: 10, keyword: "" },
-      })
-      .then((res) => {
-        setVendorList(res.data.result);
-        setVendor(res.data.result[0].id)
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  // useEffect(() => {
+  //   service
+  //     .get(`/api/vendor/list`, {
+  //       params: { reqIndex: 1, reqCount: 10, keyword: "" },
+  //     })
+  //     .then((res) => {
+  //       setVendorList(res.data.result);
+  //       setVendor(res.data.result[0].id)
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
   const [orderList, setOrderList] = useState([]);
   const search = () => {
@@ -121,22 +123,7 @@ export default function OrderManagement() {
       <Paper sx={{ padding: "30px", marginBottom: "20px" }}>
         <Grid container spacing={2}>
           <Grid item xs={3}>
-            <FormControl fullWidth>
-              <InputLabel>거래선</InputLabel>
-              <Select
-                fullWidth
-                label={"거래선"}
-                labelId=""
-                value={vendor}
-                onChange={(e) => {
-                  setVendor(e.target.value);
-                }}
-              >
-                {vendorList.map((item, idx) => {
-                  return <MenuItem value={item.id}>{item.vendorName}</MenuItem>;
-                })}
-              </Select>
-            </FormControl>
+            <VendorSelector setVendor={setVendor} vendor={vendor}/>
           </Grid>
           <Grid item xs={3}>
             <FormControl fullWidth>

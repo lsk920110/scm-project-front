@@ -14,6 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import service from "../../utils/requestAxios";
 import dateUtil from "../../utils/dateUtil";
+import VendorSelector from "../component/VendorSelector";
 
 export default function DeliveryList() {
   const [vendor, setVendor] = useState(0);
@@ -30,17 +31,17 @@ export default function DeliveryList() {
       })
       .catch((err) => console.error(err));
   };
-  useEffect(() => {
-    service
-      .get(`/api/vendor/list`, {
-        params: { reqIndex: 1, reqCount: 10, keyword: "" },
-      })
-      .then((res) => {
-        setVendorList(res.data.result);
-        setVendor(res.data.result[0].id);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  // useEffect(() => {
+  //   service
+  //     .get(`/api/vendor/list`, {
+  //       params: { reqIndex: 1, reqCount: 10, keyword: "" },
+  //     })
+  //     .then((res) => {
+  //       setVendorList(res.data.result);
+  //       setVendor(res.data.result[0].id);
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
 
 
@@ -69,15 +70,9 @@ export default function DeliveryList() {
       <Box>
         <Grid container spacing={3}>
           <Grid item xs={2}>
-            <Select
-              onChange={(e) => setVendor(e.target.value)}
-              value={vendor}
-              fullWidth
-            >
-              {vendorList.map((item, idx) => {
-                return <MenuItem value={item.id}>{item.vendorName}</MenuItem>;
-              })}
-            </Select>
+            <VendorSelector 
+            setVendor={setVendor}
+            vendor={vendor}/>
           </Grid>
           <Grid item xs={3}>
             <TextField
