@@ -98,23 +98,6 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-// const menuList = [
-//   // { path: "menu/management", title: "메뉴관리", icon: <Menu /> },
-//   { path: "member/management", title: "직원관리", icon: <Group /> },
-//   { path: "vendor/management", title: "거래선관리", icon: <Handshake /> },
-//   { path: "category/management", title: "카테고리관리", icon: <Category /> },
-//   {
-//     path: "productCord/management",
-//     title: "상품코드관리",
-//     icon: <Inventory />,
-//   },
-//   { path: "model/management", title: "모델관리", icon: <Kitchen /> },
-//   { path: "order/registration", title: "발주등록", icon: <ListAlt /> },
-//   { path: "order/management", title: "주문관리", icon: <Toc /> },
-//   { path: "sales/management", title: "매출관리", icon: <PointOfSale /> },
-//   { path: "shipping/management", title: "배송조회", icon: <LocalShipping /> },
-// ];
-
 function Layout({ nowSection, setNowSetcion }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -127,6 +110,11 @@ function Layout({ nowSection, setNowSetcion }) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  React.useEffect(()=>{
+    service.get(`/api/token/check`)
+    .then(res=>console.log(res))
+    .catch(err=>console.error(err))
+  },[])
 
   return (
     <Box sx={{ display: "flex" }}>

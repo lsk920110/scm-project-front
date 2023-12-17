@@ -39,7 +39,7 @@ export default function LoginPage() {
         navigate('/')
 
       } else {
-        alert('로그인 실패')
+        alert(response.data.result)
       }
     })
   }
@@ -64,7 +64,7 @@ export default function LoginPage() {
             <TextField fullWidth placeholder="사원ID" value={id} onChange={handleId}/>
           </ListItem>
           <ListItem>
-            <TextField fullWidth placeholder="비밀번호" value={password} onChange={handlePassword}/>
+            <TextField fullWidth placeholder="비밀번호" type="password" value={password} onChange={handlePassword}/>
           </ListItem>
           <ListItem>
             <Button fullWidth variant="contained" onClick={login}>

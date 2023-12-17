@@ -36,7 +36,7 @@ export default function App() {
     <>
       <Routes>
         <Route path="/login" element={<LoginPage nowSection={nowSection} setNowSection={setNowSetcion}/>} />
-        <Route path="/" element={<Layout nowSection={nowSection} setNowSection={setNowSetcion}/>} >
+        <Route path="/" element={<Layout nowSection={nowSection} setNowSection={setNowSetcion} />} >
           {routing.map((item,idx)=>{
             return (
               <Route  path={item.path} element={<item.element title={item.title} changeTitle={()=>{setNowSetcion(item.title)}}/>}/>

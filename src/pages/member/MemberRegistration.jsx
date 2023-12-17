@@ -63,7 +63,7 @@ export default function MemberRegistration({changeTitle}) {
   };
   useEffect(()=>{
     changeTitle()
-    service.get('/token/check',)
+    service.get('/api/token/check',)
     .then(response=>{
       if(response.data.errorCode === '0000'){
         console.log('auth token is valid')
