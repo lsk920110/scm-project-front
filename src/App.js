@@ -1,34 +1,34 @@
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Layout from "./pages/Layout";
-import MenuManagement from "./pages/menu/MenuManagement";
-import VendorManagement from "./pages/verdor/VendorManagement";
-import VendorRegistration from "./pages/verdor/VendorRegistration";
-import MemberDetail from "./pages/member/MemberDetail";
-import MemberRegistration from "./pages/member/MemberRegistration";
-import MemberManagement from "./pages/member/MemberManagement";
-import MenuRegistration from './pages/menu/MenuRegistration'
-import LoginPage from "./pages/login/LoginPage";
-import VendorDetail from "./pages/verdor/VendorDetail";
+import CategoryDetail from "./pages/category/CategoryDetail";
 import CategoryManagement from "./pages/category/CategoryManagement";
 import CategoryRegistration from "./pages/category/CategoryRegistration";
-import CategoryDetail from "./pages/category/CategoryDetail";
-import ModelManagement from "./pages/model/ModelManagement";
-import ModelRegistration from "./pages/model/ModelRegistration";
-import ModelDetail from "./pages/model/ModelDetail";
-import ProductCordManagement from "./pages/productCord/ProductCordManagement";
-import ProductCordRegistration from "./pages/productCord/ProductCordRegistration";
-import ProductCordDetail from "./pages/productCord/ProductCordDetail";
-import OrderRegistration from "./pages/order/OrderRegistration";
-import OrderManagement from "./pages/order/OrderManagement";
-import OrderDetail from "./pages/order/OrderDetail";
+import DeliveryList from './pages/delivery/DeliveryList';
 import DeliveryManagement from "./pages/delivery/DeliveryManagement";
-import DeliveryList from './pages/delivery/DeliveryList'
-import TcList from './pages/delivery/TcList'
-import DeliveryStaffList from './pages/deliveryStaff/DeliveryStaffList'
-import SalesManagement from "./pages/sales/SalesManagement";
+import TcList from './pages/delivery/TcList';
+import DeliveryStaffList from './pages/deliveryStaff/DeliveryStaffList';
 import TodayDelivery from "./pages/deliveryStaff/TodayDelivery";
 import TodayDeliveryDetail from "./pages/deliveryStaff/TodayDeliveryDetail";
+import IncomeManagement from "./pages/income/IncomeManagement";
+import LoginPage from "./pages/login/LoginPage";
+import MemberDetail from "./pages/member/MemberDetail";
+import MemberManagement from "./pages/member/MemberManagement";
+import MemberRegistration from "./pages/member/MemberRegistration";
+import MenuManagement from "./pages/menu/MenuManagement";
+import MenuRegistration from './pages/menu/MenuRegistration';
+import ModelDetail from "./pages/model/ModelDetail";
+import ModelManagement from "./pages/model/ModelManagement";
+import ModelRegistration from "./pages/model/ModelRegistration";
+import OrderDetail from "./pages/order/OrderDetail";
+import OrderManagement from "./pages/order/OrderManagement";
+import OrderRegistration from "./pages/order/OrderRegistration";
+import ProductCordDetail from "./pages/productCord/ProductCordDetail";
+import ProductCordManagement from "./pages/productCord/ProductCordManagement";
+import ProductCordRegistration from "./pages/productCord/ProductCordRegistration";
+import VendorDetail from "./pages/verdor/VendorDetail";
+import VendorManagement from "./pages/verdor/VendorManagement";
+import VendorRegistration from "./pages/verdor/VendorRegistration";
 export default function App() {
   const [nowSection,setNowSetcion] = useState('');
 
@@ -79,6 +79,6 @@ const routing = [
   {path : 'delivery/staff/management' , element : DeliveryStaffList , title : '배송기사'},
   {path : 'delivery/staff/delivery/list' , element : TodayDelivery , title : '오늘의배송'},
   {path : 'delivery/staff/delivery/detail' , element : TodayDeliveryDetail , title : '배송상세'},
-  {path : 'sales/management' , element : SalesManagement , title : '매출조회'},
+  {path : 'income/management' , element : IncomeManagement , title : '매출조회'},
   
 ]

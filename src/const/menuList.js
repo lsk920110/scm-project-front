@@ -33,7 +33,7 @@ export const menuList = [
   },
   // { id: 5, path: "order/registration", title: "발주등록", icon: <ListAlt /> },
   { id: 6, path: "order/management", title: "주문관리", icon: <Toc /> },
-  { id: 7, path: "sales/management", title: "매출관리", icon: <PointOfSale /> },
+  { id: 7, path: "income/management", title: "매출관리", icon: <PointOfSale /> },
   {
     id: 8,
     path: "delivery/management",

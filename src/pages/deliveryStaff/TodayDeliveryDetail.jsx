@@ -1,9 +1,6 @@
 import {
   Button,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   Paper,
   Table,
   TableBody,

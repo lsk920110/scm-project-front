@@ -1,13 +1,8 @@
 import {
-  MenuItem,
-  Pagination,
-  Select,
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
-  TablePagination,
   TableRow,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -73,9 +68,9 @@ export default function MemberManagement({changeTitle}) {
             );
           })}
         </TableBody>
-        <TableFooter>
+        {/* <TableFooter>
           <TableRow>
-            <TableCell colSpan={6} sx={{ border : '1px solid red'}}>
+            <TableCell colSpan={6}>
               <Pagination count={totalPaging} 
               hideNextButton
               hidePrevButton
@@ -83,7 +78,7 @@ export default function MemberManagement({changeTitle}) {
             </TableCell>
           </TableRow>
         </TableFooter>
-        <TablePagination></TablePagination>
+        <TablePagination></TablePagination> */}
       </Table>
     </>
   );

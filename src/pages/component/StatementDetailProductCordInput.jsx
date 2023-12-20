@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from "@mui/material";
 import React from "react";
 import service from "../../utils/requestAxios";
@@ -41,61 +42,51 @@ export default function StatementDetailProductCordInput({
           <TableCell>수량</TableCell>
           <TableCell>공급가</TableCell>
           <TableCell>부가세</TableCell>
-          <TableCell></TableCell>
+          {/* <TableCell></TableCell> */}
         </TableRow>
       </TableHead>
       <TableBody>
         {cordList.map((cord) => {
           return (
             <>
-              <TableRow sx={{ backgroundColor: "lightgrey" }}>
+              <TableRow
+              //  sx={{ backgroundColor: "lightgrey" }}
+               >
                 {/* <TableCell>{cord.keyId}</TableCell> */}
+                <TableCell>{cord.modelCord}</TableCell>
                 <TableCell>{cord.productCord}</TableCell>
-                <TableCell></TableCell>
                 <TableCell>
-                  <Input
-                    type="number"
-                    value={cord._quantity}
-                    onChange={controlQuantity}
-                    onAuxClick={controlQuantity}
+                  <Typography
+                    // type="number"
+                    children={cord.statementProductCordQuantity * cord.quantity}
+                    // onChange={controlQuantity}
+                    // onAuxClick={controlQuantity}
                   />
                 </TableCell>
 
-                <TableCell></TableCell>
-                <TableCell></TableCell>
+                <TableCell>{parseInt(cord.supplyPrice).toLocaleString()}</TableCell>
+                <TableCell>{parseInt(cord.supplyPriceVat).toLocaleString()}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="text"
-                    color="error"
-                    onClick={() => {
-                      const temp = cordList.filter(
-                        (item, idx) => item.keyId !== cord.keyId
-                      );
-                      setCordList([...temp]);
-                    }}
-                  >
-                    삭제
-                  </Button>
+
                 </TableCell>
               </TableRow>
-              {cord.detailList.map((detail) => {
+              {/* {cord.map((detail) => {
                 return (
                   <TableRow>
-                    {/* <TableCell></TableCell> */}
                     <TableCell></TableCell>
                     <TableCell>{detail.modelCord}</TableCell>
-                    <TableCell>{detail.quantity * cord._quantity}</TableCell>
+                    <TableCell>{detail.quantity * cord.statementProductCordQuantity}</TableCell>
                     <TableCell>{detail.supplyPrice}</TableCell>
                     <TableCell>{detail.supplyPriceVat}</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
                 );
-              })}
+              })} */}
             </>
           );
         })}
       </TableBody>
-      <TableFooter>
+      {/* <TableFooter>
         <TableRow>
           <TableCell></TableCell>
           <TableCell>
@@ -142,7 +133,7 @@ export default function StatementDetailProductCordInput({
           <TableCell></TableCell>
           <TableCell></TableCell>
         </TableRow>
-      </TableFooter>
+      </TableFooter> */}
     </Table>
   );
 }

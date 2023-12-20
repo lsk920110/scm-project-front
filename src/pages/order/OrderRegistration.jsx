@@ -43,7 +43,10 @@ export default function OrderRegistration({ changeTitle }) {
       .catch((err) => console.error(err));
   }, []);
 
-  const handleVendorId = (e) => setVendorId(e.target.value);
+  const handleVendorId = (e) => {
+    setVendorId(e.target.value);
+    setCordList([])
+  }
   const handleSalesNo = (e) => setSalesNo(e.target.value);
   const handleDeliveryReqDt = (e) => setDeliveryReqDt(e.target.value);
   const handleCustomerName = (e) => setCustomerName(e.target.value);
@@ -197,7 +200,10 @@ export default function OrderRegistration({ changeTitle }) {
                   cordList: cordList,
                 }]})
                 .then((res) => {
-                  if (res.data.errorCode === "0000") alert("등록성공");
+                  if (res.data.errorCode === "0000") {
+                    alert("등록성공")
+                    navigate(`/order/management`)
+                  };
                 })
                 .catch((err) => console.error(err));
             }}

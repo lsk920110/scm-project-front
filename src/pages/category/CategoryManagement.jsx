@@ -56,7 +56,7 @@ export default function CategoryManagement({ changeTitle }) {
                   </Link>
                 </TableCell>
                 <TableCell>{item.productCategory}</TableCell>
-                <TableCell>{item.state}</TableCell>
+                <TableCell>{item.state === '1' ? '정상' : '미운영'}</TableCell>
                 <TableCell>{item.regMemberName}</TableCell>
                 <TableCell>{dateUtil.yyyy_mm_dd(item.regDt,'-')}</TableCell>
                 <TableCell>{item.updMemberName}</TableCell>
@@ -65,16 +65,7 @@ export default function CategoryManagement({ changeTitle }) {
             );
           })}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={8} sx={{ border: "1px solid red" }}>
-              {/* <Pagination count={totalPaging} 
-              hideNextButton
-              hidePrevButton
-              onChange={(e)=>{setNowPage(parseInt(e.target.outerText))}} sx={{border : '1px solid black', margin : 'auto'}} /> */}
-            </TableCell>
-          </TableRow>
-        </TableFooter>
+
       </Table>
     </>
   );

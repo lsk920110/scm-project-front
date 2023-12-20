@@ -24,12 +24,27 @@ import dateUtil from "../../utils/dateUtil";
 import SetUtil from "../../utils/setUtil";
 import { Link } from "react-router-dom";
 import VendorSelector from "../component/VendorSelector";
+import styled from "@emotion/styled";
+import { DriveFolderUpload } from "@mui/icons-material";
 // import { CheckBox } from "@mui/icons-material";
 const style = {
   marginY: "10px",
 };
-export default function OrderManagement({changeTitle}) {
-  changeTitle()
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
+
+export default function OrderManagement({ changeTitle }) {
+  changeTitle();
   // const [list, setList] = useState([]);
   // const [vendorList, setVendorList] = useState([]);
   const [vendor, setVendor] = useState(0);
@@ -73,7 +88,7 @@ export default function OrderManagement({changeTitle}) {
           temp.add(item.statementId);
         });
         setAllstatementList(temp);
-        setCheckedList(new Set())
+        setCheckedList(new Set());
       })
       .catch((err) => console.error(err));
   };
@@ -88,7 +103,7 @@ export default function OrderManagement({changeTitle}) {
       .post("/api/order", data)
       .then((res) => {
         alert(res.data.errorMessage);
-        search()
+        search();
       })
       .catch((err) => console.error(err));
   };
@@ -96,34 +111,48 @@ export default function OrderManagement({changeTitle}) {
     const data = {
       statementIdList: [...checkedList],
     };
-    service.post(`/api/order/delete`,data)
-    .then(res=>{
-      alert(res.data.errorMessage);
-      search()
-    })
-    .catch(err=>console.error(err))
+    service
+      .post(`/api/order/delete`, data)
+      .then((res) => {
+        alert(res.data.errorMessage);
+        search();
+      })
+      .catch((err) => console.error(err));
   };
   const deleteStatement = () => {
     const data = {
       statementIdList: [...checkedList],
     };
-    console.log('data : ',data)
-    service.post(`/api/order/statement/delete`,data)
-    .then(res=>{
-      alert(res.data.errorMessage)
-      search()
-    })
-    .catch(err=>console.error(err))
-
-
+    console.log("data : ", data);
+    service
+      .post(`/api/order/statement/delete`, data)
+      .then((res) => {
+        alert(res.data.errorMessage);
+        search();
+      })
+      .catch((err) => console.error(err));
   };
   return (
     <>
-      <TopTitle title={"발주"} registrationLink={"/order/registration"} />
+      <TopTitle
+        title={"발주"}
+        registrationLink={"/order/registration"}
+        second={
+          <Button
+          sx={{marginX : '10px'}}
+            component="label"
+            variant="contained"
+            startIcon={<DriveFolderUpload />}
+          >
+            Excel업로드
+            <VisuallyHiddenInput type="file" />
+          </Button>
+        }
+      />
       <Paper sx={{ padding: "30px", marginBottom: "20px" }}>
         <Grid container spacing={2}>
           <Grid item xs={3}>
-            <VendorSelector setVendor={setVendor} vendor={vendor}/>
+            <VendorSelector setVendor={setVendor} vendor={vendor} />
           </Grid>
           <Grid item xs={3}>
             <FormControl fullWidth>
@@ -146,17 +175,31 @@ export default function OrderManagement({changeTitle}) {
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <TextField fullWidth value={keyword} onChange={(e)=>setKeyword(e.target.value)}/>
+            <TextField
+              fullWidth
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
           </Grid>
         </Grid>
 
         <Grid container spacing={2} sx={style}>
           <Grid item xs={2}></Grid>
           <Grid item xs={3}>
-            <TextField type="date" fullWidth value={startDt} onChange={(e)=>setStartDt(e.target.value)} />
+            <TextField
+              type="date"
+              fullWidth
+              value={startDt}
+              onChange={(e) => setStartDt(e.target.value)}
+            />
           </Grid>
           <Grid item xs={3}>
-            <TextField type="date" fullWidth value={endDt} onChange={e=>setEndDt(e.target.value)}/>
+            <TextField
+              type="date"
+              fullWidth
+              value={endDt}
+              onChange={(e) => setEndDt(e.target.value)}
+            />
           </Grid>
           <Grid item xs={2}>
             <FormControl fullWidth>
@@ -264,12 +307,12 @@ export default function OrderManagement({changeTitle}) {
 }
 
 function Row({ item, checkedList, setCheckedList }) {
-  const style =(state)=> {
+  const style = (state) => {
     return {
-      fontWeight : 'bold',
-      color : state === '2' ? 'red' : 'black'
-    }
-  }
+      fontWeight: "bold",
+      color: state === "2" ? "red" : "black",
+    };
+  };
   return (
     <>
       <TableRow
@@ -277,7 +320,7 @@ function Row({ item, checkedList, setCheckedList }) {
       >
         <TableCell>
           <FormControlLabel
-          disabled={item.orderState === '2'}
+            disabled={item.orderState === "2"}
             control={<Checkbox />}
             value={item.statementId}
             checked={checkedList.has(item.statementId)}
@@ -296,12 +339,16 @@ function Row({ item, checkedList, setCheckedList }) {
           />
         </TableCell>
         <TableCell sx={style(item.orderState)}>
-          {item.orderState === '1' ?
-          <Link to={"/order/detail"} state={{ statementId: item.statementId }}>
-            {item.statementId}
-          </Link> : 
-          <Typography>{item.statementId}</Typography>
-          }
+          {item.statementState === "1" ? (
+            <Link
+              to={"/order/detail"}
+              state={{ statementId: item.statementId }}
+            >
+              {item.statementId}
+            </Link>
+          ) : (
+            <Typography>{item.statementId}</Typography>
+          )}
         </TableCell>
         <TableCell sx={style(item.orderState)}>{item.orderId}</TableCell>
         <TableCell sx={style(item.orderState)}>{item.salesNo}</TableCell>
@@ -326,9 +373,9 @@ function Row({ item, checkedList, setCheckedList }) {
         </TableCell>
         <TableCell sx={style(item.orderState)}>{item.deliveryId}</TableCell>
         <TableCell sx={style(item.orderState)}>
-          {item.orderState === '1' ? '정상' : ''}
-          {item.orderState === '2' ? '삭제' : ''}
-          </TableCell>
+          {item.orderState === "1" ? "정상" : ""}
+          {item.orderState === "2" ? "삭제" : ""}
+        </TableCell>
       </TableRow>
       {item.cordList.map((cord, idx) => {
         return (

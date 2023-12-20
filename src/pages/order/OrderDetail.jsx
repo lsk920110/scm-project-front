@@ -73,8 +73,7 @@ export default function OrderDetail({ changeTitle }) {
         setRemarks(result.remarks);
         setStatemenrId(result.id);
         setOrderId(result.orderId === null ? "" : result.orderId);
-        let totalPrice = 0;
-        result.cordList.forEach((item, idx) => {
+        result.cordList2.forEach((item, idx) => {
           item['keyId'] = new Date().getTime()
           // totalPrice +=
           //   item.supplyPrice *
@@ -82,7 +81,7 @@ export default function OrderDetail({ changeTitle }) {
           //   item.productCordDetailQuantity;
         });
         // setTotalSupplyPrice(totalPrice);
-        setCordList(result.cordList);
+        setCordList(result.cordList2);
         
       })
       .catch((err) => console.error(err));

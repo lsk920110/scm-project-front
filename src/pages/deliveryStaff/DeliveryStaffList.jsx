@@ -46,7 +46,12 @@ export default function DeliveryStaffList({changeTitle}) {
     service
       .post(`/api/delivery/staff`, data)
       .then((res) => {
-        setStaffList([...staffList, res.data.result]);
+        if(res.data.errorCode === '0901'){
+          alert(res.data.errorMessage)
+        } else {
+          setStaffList([...staffList, res.data.result]);
+
+        }
       })
       .catch((err) => console.error(err));
   };

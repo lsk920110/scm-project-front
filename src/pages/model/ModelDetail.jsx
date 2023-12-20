@@ -34,6 +34,10 @@ export default function ModelDetail({ changeTitle }) {
   const [categoryId, setCategoryId] = useState(0);
   const handleCategoryId = (e) => setCategoryId(e.target.value);
   const [categoryList, setCategoryList] = useState([]);
+  const [nowStock , setNowstock] = useState(0);
+  const handleNowStock =e=>setNowstock(e.target.value)
+  const [addStock,setAddStock] = useState(0)
+  const handleAddStock =e=>setAddStock(e.target.value)
   useEffect(() => {
     changeTitle();
     service
@@ -58,32 +62,34 @@ export default function ModelDetail({ changeTitle }) {
       })
       .catch((err) => console.error(err));
   }, []);
-  useEffect(() => {
+  const modelDetailCall =()=>{
     service
-      .get(`/api/model/${location.state.id}`)
-      .then((res) => {
-        const { errorCode, errorMessage, result } = res.data;
+    .get(`/api/model/${location.state.id}`)
+    .then((res) => {
+      const { errorCode, errorMessage, result } = res.data;
 
-        if (
-          errorCode === "0302" ||
-          errorCode === "0301" ||
-          errorCode === "0303"
-        ) {
-          alert(errorMessage);
-          navigate("/login");
-        } else if (errorCode === "0000") {
-          setModelCord(result.modelCord);
-          setState(result.state);
-          setCategoryId(result.categoryId);
-        } else {
-          alert(errorMessage);
-        }
-      })
-      .catch((err) => console.error(err));
-    
-      service.get(`/api/model/stock/${location.state.id}`)
-      .then(res=>{})
-      .catch(err=>console.error(err));
+      if (
+        errorCode === "0302" ||
+        errorCode === "0301" ||
+        errorCode === "0303"
+      ) {
+        alert(errorMessage);
+        navigate("/login");
+      } else if (errorCode === "0000") {
+        setModelCord(result.modelCord);
+        setState(result.state);
+        setCategoryId(result.categoryId);
+        setNowstock(result.stock)
+        setAddStock(0)
+      } else {
+        alert(errorMessage);
+      }
+    })
+    .catch((err) => console.error(err));
+  }
+  useEffect(() => {
+    modelDetailCall()
+
 
   }, []);
 
@@ -91,7 +97,23 @@ export default function ModelDetail({ changeTitle }) {
     setModelCord(e.target.value);
   };
   // const handleStock =e=>setStock(e.target.value)
-  const update = () => {};
+  const update = () => {
+    const data = {
+      id : location.state.id,
+      categoryId : categoryId,
+      state : state,
+      modelCord : modelCord,
+      stock : addStock
+    }
+    service.put(`/api/model/${location.state.id}`,data)
+    .then((res)=>{
+      alert(res.data.errorMessage);
+      if(res.data.errorCode === '0000') modelDetailCall();
+    })
+
+
+
+  };
   return (
     <>
       <Grid container spacing={2}>
@@ -133,6 +155,24 @@ export default function ModelDetail({ changeTitle }) {
             fullWidth
             label={"모델코드"}
           />
+          <TextField
+            value={nowStock}
+            onChange={handleNowStock}
+            sx={style}
+            fullWidth
+            disabled
+            type="number"
+            label={"현재제고"}
+          />
+          <TextField
+            value={addStock}
+            onChange={handleAddStock}
+            sx={style}
+            
+            type="number"
+            fullWidth
+            label={"제고추가"}
+          />
         </Grid>
         <Grid item xs={4}>
           <RegistrationButton
@@ -144,7 +184,7 @@ export default function ModelDetail({ changeTitle }) {
         </Grid>
       </Grid>
       {/* <Divider sx={{marginY : '50px'}}/> */}
-      <Typography marginY={"50px"}>재고상황</Typography>
+      {/* <Typography marginY={"50px"}>재고상황</Typography>
       <Table>
         <TableHead>
           <TableRow>
@@ -166,7 +206,7 @@ export default function ModelDetail({ changeTitle }) {
             );
           })}
         </TableBody>
-      </Table>
+      </Table> */}
     </>
   );
 }
