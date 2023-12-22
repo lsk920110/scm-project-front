@@ -18,7 +18,7 @@ import {
 import service from "../../utils/requestAxios";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 
-export default function ProductCordManagement({ changeTitle }) {
+export default function ProductCordManagement({ changeTitle ,topTitle = true}) {
   const [vendorId, setVendorId] = useState(0);
   const [vendorList, setVendorList] = useState([]);
   const [list, setList] = useState([]);
@@ -43,7 +43,7 @@ export default function ProductCordManagement({ changeTitle }) {
   }
   return (
     <>
-      <TopTitle registrationLink={"/cord/registration"} />
+      {topTitle ? <TopTitle registrationLink={"/cord/registration"} /> : null}
       <Grid container spacing={3} marginBottom={"30px"}>
         <Grid item xs={8}>
           <FormControl fullWidth>

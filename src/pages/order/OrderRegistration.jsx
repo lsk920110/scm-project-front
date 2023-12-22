@@ -1,16 +1,20 @@
 import {
+  Box,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
-  TextField
+  TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import service from "../../utils/requestAxios";
 import RegistrationButton from "../component/RegistrationButton";
 import StatementProductCordInput from "../component/StatementProductCordInput";
+import VendorSelector from "../component/VendorSelector";
+import ProductCordManagement from "../productCord/ProductCordManagement";
 
 const style = {
   marginY: "10px",
@@ -25,7 +29,8 @@ export default function OrderRegistration({ changeTitle }) {
   const [customerName, setCustomerName] = useState("이승규");
   const [customerPhoneNumber, setCustomerPhoneNumber] = useState("01079076010");
   const [customerAddressFirst, setCustomerAddressFirst] = useState("서울");
-  const [customerAddressSecond, setCustomerAddressSecond] = useState("영등포구");
+  const [customerAddressSecond, setCustomerAddressSecond] =
+    useState("영등포구");
   const [customerAddressThird, setCustomerAddressThird] = useState("대방역");
   const [customerAddressDetail, setCustomerAddressDetail] = useState("아파트");
   const [remarks, setRemarks] = useState("비고사항입니다");
@@ -45,8 +50,8 @@ export default function OrderRegistration({ changeTitle }) {
 
   const handleVendorId = (e) => {
     setVendorId(e.target.value);
-    setCordList([])
-  }
+    setCordList([]);
+  };
   const handleSalesNo = (e) => setSalesNo(e.target.value);
   const handleDeliveryReqDt = (e) => setDeliveryReqDt(e.target.value);
   const handleCustomerName = (e) => setCustomerName(e.target.value);
@@ -171,13 +176,12 @@ export default function OrderRegistration({ changeTitle }) {
             onChange={handleRemarks}
           />
           <StatementProductCordInput
-          cord={cord}
-          cordList={cordList}
-          setCord={setCord}
-          setCordList={setCordList}
-          vendorId={vendorId}
+            cord={cord}
+            cordList={cordList}
+            setCord={setCord}
+            setCordList={setCordList}
+            vendorId={vendorId}
           />
-          
         </Grid>
         <Grid item xs={4}>
           <RegistrationButton
@@ -186,30 +190,52 @@ export default function OrderRegistration({ changeTitle }) {
             }}
             onSave={() => {
               service
-                .post(`/api/order/statement`, {list:[{
-                  vendorId: vendorId,
-                  salesNo: salesNo,
-                  deliveryReqDt: new Date(deliveryReqDt),
-                  customerName: customerName,
-                  customerPhoneNumber: customerPhoneNumber,
-                  customerAddressFirst: customerAddressFirst,
-                  customerAddressSecond: customerAddressSecond,
-                  customerAddressThird: customerAddressThird,
-                  customerAddressDetail: customerAddressDetail,
-                  remarks: remarks,
-                  cordList: cordList,
-                }]})
+                .post(`/api/order/statement`, {
+                  list: [
+                    {
+                      vendorId: vendorId,
+                      salesNo: salesNo,
+                      deliveryReqDt: new Date(deliveryReqDt),
+                      customerName: customerName,
+                      customerPhoneNumber: customerPhoneNumber,
+                      customerAddressFirst: customerAddressFirst,
+                      customerAddressSecond: customerAddressSecond,
+                      customerAddressThird: customerAddressThird,
+                      customerAddressDetail: customerAddressDetail,
+                      remarks: remarks,
+                      cordList: cordList,
+                    },
+                  ],
+                })
                 .then((res) => {
                   if (res.data.errorCode === "0000") {
-                    alert("등록성공")
-                    navigate(`/order/management`)
-                  };
+                    alert("등록성공");
+                    navigate(`/order/management`);
+                  }
                 })
                 .catch((err) => console.error(err));
             }}
           />
+          {/* <CordFinder /> */}
+          <Paper sx={{marginY : '25px' , padding : '5px'}}>
+            <ProductCordManagement changeTitle={() => {}} topTitle={false}/>
+          </Paper>
         </Grid>
       </Grid>
     </>
+  );
+}
+
+function CordFinder() {
+  const [vendor, setVendor] = useState(0);
+  const handlerVendor = (e) => {
+    const vendorId = e.target.value;
+  };
+  return (
+    <Box marginY={"25px"}>
+      <Paper
+        children={<VendorSelector setVendor={setVendor} vendor={vendor} />}
+      />
+    </Box>
   );
 }

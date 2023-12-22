@@ -1,5 +1,4 @@
 import {
-  Divider,
   FormControl,
   Grid,
   InputLabel,
@@ -14,11 +13,11 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import RegistrationButton from "../component/RegistrationButton";
 import { useLocation, useNavigate } from "react-router-dom";
-import service from "../../utils/requestAxios";
 import { modelState } from "../../const/modelState";
-import { responsiveProperty } from "@mui/material/styles/cssUtils";
+import service from "../../utils/requestAxios";
+import RegistrationButton from "../component/RegistrationButton";
+import dateUtil from "../../utils/dateUtil";
 
 const style = {
   marginY: "10px",
@@ -34,10 +33,12 @@ export default function ModelDetail({ changeTitle }) {
   const [categoryId, setCategoryId] = useState(0);
   const handleCategoryId = (e) => setCategoryId(e.target.value);
   const [categoryList, setCategoryList] = useState([]);
-  const [nowStock , setNowstock] = useState(0);
-  const handleNowStock =e=>setNowstock(e.target.value)
-  const [addStock,setAddStock] = useState(0)
-  const handleAddStock =e=>setAddStock(e.target.value)
+  const [nowStock, setNowstock] = useState(0);
+  const handleNowStock = (e) => setNowstock(e.target.value);
+  const [addStock, setAddStock] = useState(0);
+  const handleAddStock = (e) => setAddStock(e.target.value);
+  const [historyList, setHistoryList] = useState([]);
+
   useEffect(() => {
     changeTitle();
     service
@@ -62,35 +63,34 @@ export default function ModelDetail({ changeTitle }) {
       })
       .catch((err) => console.error(err));
   }, []);
-  const modelDetailCall =()=>{
+  const modelDetailCall = () => {
     service
-    .get(`/api/model/${location.state.id}`)
-    .then((res) => {
-      const { errorCode, errorMessage, result } = res.data;
+      .get(`/api/model/${location.state.id}`)
+      .then((res) => {
+        const { errorCode, errorMessage, result } = res.data;
 
-      if (
-        errorCode === "0302" ||
-        errorCode === "0301" ||
-        errorCode === "0303"
-      ) {
-        alert(errorMessage);
-        navigate("/login");
-      } else if (errorCode === "0000") {
-        setModelCord(result.modelCord);
-        setState(result.state);
-        setCategoryId(result.categoryId);
-        setNowstock(result.stock)
-        setAddStock(0)
-      } else {
-        alert(errorMessage);
-      }
-    })
-    .catch((err) => console.error(err));
-  }
+        if (
+          errorCode === "0302" ||
+          errorCode === "0301" ||
+          errorCode === "0303"
+        ) {
+          alert(errorMessage);
+          navigate("/login");
+        } else if (errorCode === "0000") {
+          setModelCord(result.modelCord);
+          setState(result.state);
+          setCategoryId(result.categoryId);
+          setNowstock(result.stock);
+          setAddStock(0);
+        } else {
+          alert(errorMessage);
+        }
+      })
+      .catch((err) => console.error(err));
+  };
   useEffect(() => {
-    modelDetailCall()
-
-
+    modelDetailCall();
+    historyListCall();
   }, []);
 
   const handleModelCord = (e) => {
@@ -99,20 +99,29 @@ export default function ModelDetail({ changeTitle }) {
   // const handleStock =e=>setStock(e.target.value)
   const update = () => {
     const data = {
-      id : location.state.id,
-      categoryId : categoryId,
-      state : state,
-      modelCord : modelCord,
-      stock : addStock
-    }
-    service.put(`/api/model/${location.state.id}`,data)
-    .then((res)=>{
+      id: location.state.id,
+      categoryId: categoryId,
+      state: state,
+      modelCord: modelCord,
+      stock: addStock,
+    };
+    service.put(`/api/model/${location.state.id}`, data).then((res) => {
       alert(res.data.errorMessage);
-      if(res.data.errorCode === '0000') modelDetailCall();
-    })
+      if (res.data.errorCode === "0000") {
+        modelDetailCall()
+        historyListCall()
+      };
+    });
+  };
 
-
-
+  const historyListCall = () => {
+    service
+      .get(`/api/model/stock`, { params: { modelId: location.state.id } })
+      .then((res) => {
+        const { errorCode, errorMessage, result } = res.data;
+        setHistoryList(result);
+      })
+      .catch((err) => console.error(err));
   };
   return (
     <>
@@ -168,7 +177,6 @@ export default function ModelDetail({ changeTitle }) {
             value={addStock}
             onChange={handleAddStock}
             sx={style}
-            
             type="number"
             fullWidth
             label={"제고추가"}
@@ -183,30 +191,43 @@ export default function ModelDetail({ changeTitle }) {
           />
         </Grid>
       </Grid>
+      <History historyList={historyList} />
+    </>
+  );
+}
+
+function History({ historyList }) {
+  function parseStockType(stockType) {
+    if (stockType === "in") return "입고";
+    if (stockType === "out") return "출고";
+  }
+
+  return (
+    <>
       {/* <Divider sx={{marginY : '50px'}}/> */}
-      {/* <Typography marginY={"50px"}>재고상황</Typography>
+      <Typography marginY={"50px"}>재고상황</Typography>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>날짜</TableCell>
-            <TableCell>수량</TableCell>
-            <TableCell>증감</TableCell>
+            <TableCell>입출고</TableCell>
             <TableCell>txId</TableCell>
+            <TableCell>수량</TableCell>
+            <TableCell>날짜</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {[].map((item, idx) => {
+          {historyList.map((item, idx) => {
             return (
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
+                <TableCell>{parseStockType(item.stockType)}</TableCell>
+                <TableCell>{item.txId}</TableCell>
+                <TableCell>{item.quantity}</TableCell>
+                <TableCell>{dateUtil.yyyy_mm_dd(item.txDt, "-")}</TableCell>
               </TableRow>
             );
           })}
         </TableBody>
-      </Table> */}
+      </Table>
     </>
   );
 }

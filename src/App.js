@@ -29,6 +29,7 @@ import ProductCordRegistration from "./pages/productCord/ProductCordRegistration
 import VendorDetail from "./pages/verdor/VendorDetail";
 import VendorManagement from "./pages/verdor/VendorManagement";
 import VendorRegistration from "./pages/verdor/VendorRegistration";
+import TcDetail from "./pages/delivery/TcDetail";
 export default function App() {
   const [nowSection,setNowSetcion] = useState('');
 
@@ -45,6 +46,7 @@ export default function App() {
           <Route path="delivery/management" element={<DeliveryManagement title='배송' changeTitle={()=>setNowSetcion('배송관리')}/>}>
             <Route path="delivery/list" element={<DeliveryList/>}/>
             <Route path="tc/list" element={<TcList/>}/>
+            <Route path="tc/detail" element={<TcDetail/>}/>
             {/* <Route path="staff/list" element={<DeliveryStaffList/>}/> */}
           </Route>
         </Route>

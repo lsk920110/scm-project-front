@@ -139,6 +139,7 @@ export default function OrderManagement({ changeTitle }) {
         registrationLink={"/order/registration"}
         second={
           <Button
+          disabled
           sx={{marginX : '10px'}}
             component="label"
             variant="contained"

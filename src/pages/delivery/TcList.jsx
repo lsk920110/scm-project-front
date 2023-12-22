@@ -1,15 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import service from '../../utils/requestAxios'
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import React, { useEffect, useState } from "react";
+import service from "../../utils/requestAxios";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function TcList() {
-  const [list,setList] = useState([])
+  const [list, setList] = useState([]);
 
-  useEffect(()=>{
-    service.get('/api/delivery/tc')
-    .then(res=>setList(res.data.result))
-    .catch(err=>console.error(err))
-  },[])
+  useEffect(() => {
+    service
+      .get("/api/delivery/tc")
+      .then((res) => setList(res.data.result))
+      .catch((err) => console.error(err));
+  }, []);
   return (
     <>
       <Table>
@@ -22,22 +30,20 @@ export default function TcList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {list.map((item,idx)=>{
+          {list.map((item, idx) => {
             return (
               <TableRow>
-                <TableCell>{item.tc}</TableCell>
+                <TableCell>
+                  <Link to={"/delivery/management/tc/detail"} state={{id : item.tc}}>{item.tc}</Link>
+                </TableCell>
                 <TableCell>{item.tcName}</TableCell>
                 <TableCell>{item.telephone}</TableCell>
-                <TableCell>{item.state === '1' ? '운영중' : '중단'}</TableCell>
+                <TableCell>{item.state === "1" ? "운영중" : "중단"}</TableCell>
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
-    
-    
-    
-    
     </>
-  )
+  );
 }
